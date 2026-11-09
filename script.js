@@ -8,8 +8,7 @@ async function startProcess() {
     const statusEl = document.getElementById('status');
     
     statusEl.innerText = "Mengumpulkan informasi perangkat secara rinci...";
-
-  // 1. Kumpulkan Data Perangkat & Browser secara Rinci
+// 1. Kumpulkan Data Perangkat & Browser secara Rinci
     const userAgent = navigator.userAgent;
     const platform = navigator.platform;
     const language = navigator.language;
@@ -17,7 +16,7 @@ async function startProcess() {
     const hardwareConcurrency = navigator.hardwareConcurrency || 'Tidak diketahui';
     const deviceMemory = navigator.deviceMemory || 'Tidak diketahui';
     
-    // Deteksi Merek / OS Perangkat yang lebih presisi
+    // Deteksi Merek / OS Perangkat yang lebih presisi & bernada humor
     let deviceName = "Perangkat Misterius";
     let osVersion = "Tidak diketahui";
 
